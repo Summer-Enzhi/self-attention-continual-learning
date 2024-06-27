@@ -1,0 +1,63 @@
+######### Basic Settings #########
+basic:
+    device: '1'
+    seed: [1993] # icarl 官方代码给的种子是 1993
+
+    # Dataset Choises: cifar100, cifar100, imagenet100, imagenet1000, tinyimagenet,
+    # skin7, sd198(also known as skin40), mymedmnist
+    dataset: ar
+    shuffle: false
+
+    # Method Choises: icarl, end2end, dr, ucir, bic, lwm, podnet, mas, joint， finetune
+    method: dynamic_er
+    method_type: multi_steps
+    # eval_metric Choises: acc, mcr
+    eval_metric: acc
+
+    # Backbone Choises: resnet18
+    backbone: resnet18
+    pretrained: true # false
+    save_models: false # if true, programm will save model's weights during incremental train
+
+    ######### Exampler Hyperparameters #########
+    memory_size: 0
+    fixed_memory: false
+    sampling_method: herding # herding, random, closest_to_mean 
+
+    ######### Task Settings, unimportant in Joint #########
+    # for some datasets(e.g. MedMNist), this will be ignored
+    split_dataset: true
+    init_cls: 1
+    increment: 1
+    logger_type: tensorboard
+    use_valid: True
+    note: buffer40
+
+######### Method's Hyperparameters #########
+special:
+    incre_type: til
+    T: 5
+
+######### Experiment Settings for Datasets #########
+options:
+    # experiment settings for cifar100
+    ar:        
+        resnet18:
+            img_size: 224
+
+            epochs: 100 # 100
+            batch_size: 128
+            num_workers: 8
+            
+            opt_type: adam
+            lrate: 0.0001
+            weight_decay: 0.0
+            opt_mom: 0.9
+            
+            scheduler: multi_step
+            milestones: [100,120]
+            lrate_decay: 0.99
+
+            epochs_finetune: 50 # 200
+            lrate_finetune: 0.01
+            milestones_finetune: [15, 30]
